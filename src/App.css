@@ -1,0 +1,217 @@
+body{
+    background-color: #F5F5DC !important;
+    overflow-x: hidden;
+}
+
+.container {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%; /* Full width */
+    height: 100%; /* Full height */
+  }
+  
+  .card {
+    max-width: 745px;
+    width: 500px;
+    border: 2px solid #A89F8D;
+    border-radius: 8px;
+    margin: 20vh auto; /* Optional for vertical margin */
+  }
+  @media (max-width: 539px) {
+    .card {
+      width: 100% !important;
+    }
+  }
+.loginTextfields{
+  width: 50% !important;
+}
+  
+
+/* @import url('https://fonts.googleapis.com/css2?family=Playfair+Display:wght@700&display=swap'); */
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+.container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  width: 100%;
+  height: 100%; 
+}
+
+.card {
+  max-width: 745px;
+  width: 500px;
+  border: 2px solid #A89F8D;
+  border-radius: 8px;
+  margin: auto; 
+}
+
+body{
+  margin: 0;
+  padding: 0;
+  background-color: #F5F5DC;
+  /* overflow-y: hidden; */
+}
+
+.navbar1{
+  background-color:  #F5F5DC!important;
+}
+
+
+
+.btn2{
+  border-color: #C2B280 !important;
+  color: #C2B280 !important;
+}
+
+.btn2:hover{
+  background-color: #C2B280 !important;
+  border-color: #F5F5DC !important;
+  color: #F5F5DC !important;
+}
+
+h2 {
+  font-family: 'Playfair Display', serif;
+  font-weight: 700;  /* Bold style */
+  font-size: 2.5rem; /* Adjust the font size as needed */
+  color: #D4AF37; /* Optional: Customize the color */
+}
+
+.parent{
+  display: flex;
+  max-width: 745px;
+  margin: auto;
+  place-items: center; /* Shortcut for both justify-items and align-items */
+  height: 100vh;
+}
+
+.footer {
+  background-color: #556B2F;
+  padding: 10px 0;
+  text-align: center;
+  width: 100%;
+}
+
+.footer p {
+  margin: 5px 0;
+  color: #F5F5DC;}
+
+.footer .footer-links {
+  margin: 10px 0;
+}
+
+.footer .footer-links a {
+  color: #F5F5DC;
+  text-decoration: none;
+  margin: 0 15px;
+}
+
+.footer .footer-links a:hover {
+  text-decoration: underline;
+}
+
+.footer .disclaimer {
+  font-size: 12px;
+  color: #f5f5f5;
+  margin-top: 10px;
+}
+
+@media (max-width: 768px) {
+  .navbar {
+    flex-direction: column;
+    align-items: flex-start;
+    padding: 10px;
+  }
+  .footer{
+    height: 10%;
+  }
+  .btn3{
+    display: flex;
+    flex-direction: column;
+  }
+  .myGallery{
+    width: 100%;
+  }
+  .navbar .container-fluid {
+    flex-direction: column;
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .navbar h2 {
+    font-size: 1.2rem;
+  }
+
+  .navbar img {
+    width: 30px;
+    height: 30px;
+  }
+
+  .navbar .btn {
+    width: 100%;
+    margin-top: 10px;
+  }
+
+  .navbar .footer-links {
+    display: flex;
+    flex-direction: column;
+    margin-top: 10px;
+  }
+
+  .navbar .footer-links a {
+    margin-bottom: 8px;
+  }
+}
+
+@media (max-width: 480px) {
+  .navbar h2 {
+    font-size: 1rem;
+  }
+
+  .navbar .btn {
+    font-size: 0.9rem;
+  }
+
+  .navbar img {
+    width: 25px;
+    height: 25px;
+  }
+}
+
+/* .background {
+   background-image: url('../public/img/background.jpg');
+  background-repeat: no-repeat;
+  background-size: contain; 
+}*/
+ 
+.remove{
+  text-decoration: none;
+}
+/* .formImg{
+  background-image: url('/img/bacgroundForForm.jpg');
+  background-size: cover;
+  background-position: center;
+  width: 100%;
+} */
+
+
+.login{
+  background-color: #f5f5dc !important;
+  border: 2px solid #bfaf8d !important;
+  box-shadow: none !important;
+}
+
+.signupBtn{
+  background-color: #bfaf8d !important;
+  border: none !important;
+}
+.signupBtn:hover{
+  background-color: #f5f5dc !important;
+  border:1px solid #bfaf8d !important;
+}

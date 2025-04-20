@@ -178,10 +178,10 @@ const VirtualGallery = () => {
                 `;
                 infoCardRef.current.style.display = 'block';
 
-                // Add onClick event here
+                // Add onClick directly to the button
                 const buyBtn = infoCardRef.current.querySelector('.buyBtn');
                 if (buyBtn) {
-                    buyBtn.onclick = () => {
+                    buyBtn.addEventListener('click', () => {
                         console.log("✅ Buy button clicked for:", paintingToShow.userData);
 
                         if (!paintingToShow?.userData?._id) {
@@ -191,7 +191,7 @@ const VirtualGallery = () => {
 
                         localStorage.setItem("paintingData", JSON.stringify(paintingToShow));
                         navigate(`/paintings/paintingpost/${paintingToShow.userData._id}?buyerId=${userID}`);
-                    };
+                    });
                 }
             } else if (infoCardRef.current) {
                 infoCardRef.current.innerHTML = '';

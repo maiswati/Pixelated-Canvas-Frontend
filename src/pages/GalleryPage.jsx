@@ -3,10 +3,11 @@ import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
 import axios from 'axios';
-
+import { useNavigate } from 'react-router-dom';
 const VirtualGallery = () => {
     const canvasRef = useRef(null);
     const infoCardRef = useRef(null);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
@@ -177,15 +178,17 @@ const VirtualGallery = () => {
                 infoCardRef.current.dataset.paintingId = _id;
                 infoCardRef.current.style.display = 'block';
                 // Add click listener after DOM update
-                if (buyBtn) {
-                  buyBtn.onclick = () => {
-                      const paintingId = infoCardRef.current.dataset.paintingId;
-                      if (paintingId && api && userID) {
-                          controls1.lock(); // <--- Re-lock before navigation or just to resume control
-                          window.location.href = `/paintings/paintingpost/${paintingId}?buyerId=${userID}`;
-                      }
-                  };
-              }
+                setTimeout(() => {
+                  const buyBtn = document.getElementById('buyBtn');
+                  if (buyBtn) {
+                      buyBtn.onclick = () => {
+                          const paintingId = infoCardRef.current.dataset.paintingId;
+                          if (paintingId && userID) {
+                              navigate(`/paintings/paintingpost/${paintingId}?buyerId=${userID}`);
+                          }
+                      };
+                  }
+              }, 0);
               
             } else if (infoCardRef.current) {
                 infoCardRef.current.innerHTML = '';

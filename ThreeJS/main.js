@@ -1,8 +1,3 @@
-import * as THREE from 'three';
-import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
-import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
-import axios from 'axios';
-
 const urlParams = new URLSearchParams(window.location.search);
 const api = urlParams.get('api');
 
@@ -67,7 +62,7 @@ console.log("✅ Scene initialized");
 camera.position.set(0, 2, 15);
 
 // 🎮 Pointer Lock Controls
-const controls1 = new PointerLockControls(camera, document.body);
+const controls1 = new THREE.PointerLockControls(camera, document.body);
 
 document.addEventListener("click", () => {
     if (!controls1.isLocked) {
@@ -98,7 +93,7 @@ function onKeyDown(event) {
 
 // 🕹 Controls
 console.log("🎮 Initializing controls...");
-const controls = new OrbitControls(camera, renderer.domElement);
+const controls = new THREE.OrbitControls(camera, renderer.domElement);
 controls.enableDamping = true;
 controls.dampingFactor = 0.05;
 controls.minPolarAngle = 0;

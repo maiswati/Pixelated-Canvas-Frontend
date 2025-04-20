@@ -4,6 +4,7 @@ import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
 import axios from 'axios';
 import { useNavigate } from 'react-router-dom';
+
 const VirtualGallery = () => {
     const canvasRef = useRef(null);
     const infoCardRef = useRef(null);
@@ -177,19 +178,19 @@ const VirtualGallery = () => {
                 `;
                 infoCardRef.current.dataset.paintingId = _id;
                 infoCardRef.current.style.display = 'block';
+
                 // Add click listener after DOM update
                 setTimeout(() => {
-                  const buyBtn = document.getElementById('buyBtn');
-                  if (buyBtn) {
-                      buyBtn.onclick = () => {
-                          const paintingId = infoCardRef.current.dataset.paintingId;
-                          if (paintingId && userID) {
-                              navigate(`/paintings/paintingpost/${paintingId}?buyerId=${userID}`);
-                          }
-                      };
-                  }
-              }, 0);
-              
+                    const buyBtn = document.getElementById('buyBtn');
+                    if (buyBtn) {
+                        buyBtn.onclick = () => {
+                            const paintingId = infoCardRef.current.dataset.paintingId;
+                            if (paintingId && userID) {
+                                navigate(`/paintings/paintingpost/${paintingId}?buyerId=${userID}`);
+                            }
+                        };
+                    }
+                }, 0);
             } else if (infoCardRef.current) {
                 infoCardRef.current.innerHTML = '';
                 infoCardRef.current.dataset.paintingId = '';
@@ -220,31 +221,14 @@ const VirtualGallery = () => {
     }, []);
 
     return (
-        <div style={{ position: 'relative' }}>
-            <canvas ref={canvasRef} />
-            <div
-                ref={infoCardRef}
-                id="info-card"
-                style={{
-                  display: 'none',
-                  position: 'absolute',
-                  bottom: '20px',
-                  left: '20px',
-                  padding: '10px',
-                  minHeight: '100px',
-                  minWidth: '300px',
-                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                  color: 'white',
-                  borderRadius: '5px',
-                  fontFamily: 'Arial, sans-serif',
-                  zIndex: 100
-                }}
-            ></div>
+        <div style={{ height: '100vh', backgroundColor: 'black' }}>
+            <div ref={infoCardRef} style={{
+                position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                backgroundColor: 'white', padding: '20px', borderRadius: '10px', display: 'none'
+            }}></div>
+            <canvas ref={canvasRef}></canvas>
         </div>
     );
 };
 
 export default VirtualGallery;
-
-
-

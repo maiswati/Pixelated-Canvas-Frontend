@@ -183,7 +183,7 @@ const VirtualGallery = () => {
                       buyBtn.onclick = () => {
                           const paintingId = infoCardRef.current.dataset.paintingId;
                           if (paintingId && api && userID) {
-                              window.location.href = `${api}/paintings/paintingpost/${paintingId}?buyerId=${userID}`;
+                              window.location.href = `/paintings/paintingpost/${paintingId}?buyerId=${userID}`;
                           }
                       };
                   }

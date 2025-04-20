@@ -175,7 +175,7 @@ const VirtualGallery = () => {
                     <button id="buyBtn" class="buyBtn">Buy Now</button>
                 `;
                 infoCardRef.current.dataset.paintingId = _id;
-
+                infoCardRef.current.style.display = 'block';
                 // Add click listener after DOM update
                 setTimeout(() => {
                   const buyBtn = document.getElementById("buyBtn");

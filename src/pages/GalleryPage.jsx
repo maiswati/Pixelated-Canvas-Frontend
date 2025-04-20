@@ -10,7 +10,7 @@ const VirtualGallery = () => {
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        const api = urlParams.get('api');
+        const api = 'https://pixelated-canvas.onrender.com';
         const userID = urlParams.get('Id');
 
         console.log("API:", api);

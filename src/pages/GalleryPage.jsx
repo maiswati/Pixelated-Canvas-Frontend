@@ -177,15 +177,17 @@ const VirtualGallery = () => {
                 infoCardRef.current.dataset.paintingId = _id;
 
                 // Add click listener after DOM update
-                const buyBtn = document.getElementById("buyBtn");
-                if (buyBtn) {
-                    buyBtn.onclick = () => {
-                        const paintingId = infoCardRef.current.dataset.paintingId;
-                        if (paintingId && api && userID) {
-                            window.location.href = `${api}/paintings/paintingpost/${paintingId}?buyerId=${userID}`;
-                        }
-                    };
-                }
+                setTimeout(() => {
+                  const buyBtn = document.getElementById("buyBtn");
+                  if (buyBtn) {
+                      buyBtn.onclick = () => {
+                          const paintingId = infoCardRef.current.dataset.paintingId;
+                          if (paintingId && api && userID) {
+                              window.location.href = `${api}/paintings/paintingpost/${paintingId}?buyerId=${userID}`;
+                          }
+                      };
+                  }
+              }, 0);
             } else if (infoCardRef.current) {
                 infoCardRef.current.innerHTML = '';
                 infoCardRef.current.dataset.paintingId = '';
@@ -222,14 +224,18 @@ const VirtualGallery = () => {
                 ref={infoCardRef}
                 id="info-card"
                 style={{
-                    position: "absolute",
-                    top: "10px",
-                    left: "10px",
-                    background: "rgba(255,255,255,0.9)",
-                    padding: "10px",
-                    borderRadius: "8px",
-                    maxWidth: "300px",
-                    zIndex: 1,
+                  display: 'none',
+                  position: 'absolute',
+                  bottom: '20px',
+                  left: '20px',
+                  padding: '10px',
+                  minHeight: '100px',
+                  minWidth: '300px',
+                  backgroundColor: 'rgba(0, 0, 0, 0.8)',
+                  color: 'white',
+                  borderRadius: '5px',
+                  fontFamily: 'Arial, sans-serif',
+                  zIndex: 100
                 }}
             ></div>
         </div>

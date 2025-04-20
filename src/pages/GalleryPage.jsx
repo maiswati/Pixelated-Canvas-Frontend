@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
@@ -8,12 +8,13 @@ import { useNavigate } from 'react-router-dom';
 const VirtualGallery = () => {
     const canvasRef = useRef(null);
     const infoCardRef = useRef(null);
+    const [galleryPaintings, setGalleryPaintings] = useState([]);
     const navigate = useNavigate();
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        const api = 'https://pixelated-canvas.onrender.com';
         const userID = urlParams.get('Id');
+        const api = 'https://pixelated-canvas.onrender.com';
 
         console.log("API:", api);
         console.log("Buyer ID:", userID);
@@ -25,7 +26,6 @@ const VirtualGallery = () => {
         const MAX_WALL_X = 59;
         let currentSideWallLimit = 120;
         const SIDE_WALL_EXTENSION_SIZE = 180;
-        let galleryPaintings = [];
         let back = 50;
 
         const scene = new THREE.Scene();
@@ -177,6 +177,22 @@ const VirtualGallery = () => {
                     <button class="buyBtn" data-painting-id="${_id}">Buy Now</button>
                 `;
                 infoCardRef.current.style.display = 'block';
+
+                // Add onClick event here
+                const buyBtn = infoCardRef.current.querySelector('.buyBtn');
+                if (buyBtn) {
+                    buyBtn.onclick = () => {
+                        console.log("✅ Buy button clicked for:", paintingToShow.userData);
+
+                        if (!paintingToShow?.userData?._id) {
+                            console.error("❌ Painting ID is undefined!");
+                            return;
+                        }
+
+                        localStorage.setItem("paintingData", JSON.stringify(paintingToShow));
+                        navigate(`/paintings/paintingpost/${paintingToShow.userData._id}?buyerId=${userID}`);
+                    };
+                }
             } else if (infoCardRef.current) {
                 infoCardRef.current.innerHTML = '';
             }
@@ -194,7 +210,7 @@ const VirtualGallery = () => {
         const fetchGalleryPaintings = async () => {
             try {
                 const res = await axios.get(`${api}/forgallery/allpaintings`);
-                galleryPaintings = res.data.fetchedPaintings;
+                setGalleryPaintings(res.data.fetchedPaintings);
                 mountAllPaintings();
             } catch (err) {
                 console.error("❌ Fetch error:", err);
@@ -204,24 +220,6 @@ const VirtualGallery = () => {
         fetchGalleryPaintings();
         animate();
 
-        // Event delegation for handling "Buy Now" button click
-        const handleBuyNow = (event) => {
-            const button = event.target;
-            if (button && button.classList.contains('buyBtn')) {
-                const paintingId = button.dataset.paintingId;
-                if (paintingId && userID) {
-                    navigate(`/paintings/paintingpost/${paintingId}?buyerId=${userID}`);
-                }
-            }
-        };
-
-        // Attach event listener for button clicks
-        document.addEventListener('click', handleBuyNow);
-
-        // Cleanup event listener on component unmount
-        return () => {
-            document.removeEventListener('click', handleBuyNow);
-        };
     }, []); // Dependency array
 
     return (

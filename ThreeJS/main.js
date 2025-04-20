@@ -5,6 +5,7 @@ import axios from 'axios';
 
 const urlParams = new URLSearchParams(window.location.search);
 const api = urlParams.get('api');
+console.log("API", api);
 
 console.log("✅ Script Loaded");
 const userID = urlParams.get("Id");

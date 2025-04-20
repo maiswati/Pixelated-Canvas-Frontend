@@ -177,17 +177,16 @@ const VirtualGallery = () => {
                 infoCardRef.current.dataset.paintingId = _id;
                 infoCardRef.current.style.display = 'block';
                 // Add click listener after DOM update
-                setTimeout(() => {
-                  const buyBtn = document.getElementById("buyBtn");
-                  if (buyBtn) {
-                      buyBtn.onclick = () => {
-                          const paintingId = infoCardRef.current.dataset.paintingId;
-                          if (paintingId && api && userID) {
-                              window.location.href = `/paintings/paintingpost/${paintingId}?buyerId=${userID}`;
-                          }
-                      };
-                  }
-              }, 0);
+                if (buyBtn) {
+                  buyBtn.onclick = () => {
+                      const paintingId = infoCardRef.current.dataset.paintingId;
+                      if (paintingId && api && userID) {
+                          controls1.lock(); // <--- Re-lock before navigation or just to resume control
+                          window.location.href = `/paintings/paintingpost/${paintingId}?buyerId=${userID}`;
+                      }
+                  };
+              }
+              
             } else if (infoCardRef.current) {
                 infoCardRef.current.innerHTML = '';
                 infoCardRef.current.dataset.paintingId = '';

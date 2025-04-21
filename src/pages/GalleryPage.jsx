@@ -176,6 +176,7 @@ const VirtualGallery = () => {
                     return;
                   }
           
+                  localStorage.setItem("paintingData", JSON.stringify(paintingToShow));
                   navigate(`/paintings/paintingpost/${paintingToShow.userData._id}?buyerId=${userID}`);
                 });
               }
@@ -186,6 +187,7 @@ const VirtualGallery = () => {
               controls1.lock();
             }
           };
+
 
         const animate = () => {
             requestAnimationFrame(animate);

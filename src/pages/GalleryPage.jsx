@@ -1,17 +1,23 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import * as THREE from 'three';
 import { OrbitControls } from 'three/examples/jsm/controls/OrbitControls.js';
 import { PointerLockControls } from 'three/examples/jsm/controls/PointerLockControls.js';
 import axios from 'axios';
+import { useNavigate } from 'react-router-dom';
 
 const VirtualGallery = () => {
     const canvasRef = useRef(null);
     const infoCardRef = useRef(null);
+    const [galleryPaintings, setGalleryPaintings] = useState([]);
+    const navigate = useNavigate();
 
     useEffect(() => {
         const urlParams = new URLSearchParams(window.location.search);
-        const api = 'https://pixelated-canvas.onrender.com';
         const userID = urlParams.get('Id');
+        const api = 'https://pixelated-canvas.onrender.com';
+
+        console.log("API:", api);
+        console.log("Buyer ID:", userID);
 
         const FRONT_WALL = -79.6;
         const GAP_BETWEEN_PAINTINGS = 30;
@@ -20,7 +26,6 @@ const VirtualGallery = () => {
         const MAX_WALL_X = 59;
         let currentSideWallLimit = 120;
         const SIDE_WALL_EXTENSION_SIZE = 180;
-        let galleryPaintings = [];
         let back = 50;
 
         const scene = new THREE.Scene();
@@ -153,41 +158,45 @@ const VirtualGallery = () => {
         };
 
         const updatePaintingInfo = () => {
-            if (paintingToShow && infoCardRef.current) {
-              // Unlock pointer controls so user can interact with the DOM
-              controls1.unlock();
-          
-              const { title, description, category, _id } = paintingToShow.userData;
-              infoCardRef.current.innerHTML = `
-                <h1>${title}</h1>
-                <h2>${category}</h2>
-                <p>${description}</p>
-                <button class="buyBtn" data-painting-id="${_id}">Buy Now</button>
-              `;
-              infoCardRef.current.style.display = 'block';
-          
-              const buyBtn = infoCardRef.current.querySelector('.buyBtn');
-              if (buyBtn) {
-                buyBtn.addEventListener('click', () => {
-                  console.log("✅ Buy button clicked for:", paintingToShow.userData);
-          
-                  if (!paintingToShow?.userData?._id) {
-                    console.error("❌ Painting ID is undefined!");
-                    return;
-                  }
-          
-                  localStorage.setItem("paintingData", JSON.stringify(paintingToShow));
-                  navigate(`/paintings/paintingpost/${paintingToShow.userData._id}?buyerId=${userID}`);
-                });
-              }
-            } else if (infoCardRef.current) {
-              // Hide card and re-lock pointer
-              infoCardRef.current.innerHTML = '';
-              infoCardRef.current.style.display = 'none';
-              controls1.lock();
-            }
-          };
+            let paintingToShow = null;
+            const threshold = 30;
 
+            scene.children.forEach((obj) => {
+                if (obj.userData && obj.userData.position) {
+                    const dist = camera.position.distanceTo(obj.userData.position);
+                    if (dist < threshold) paintingToShow = obj;
+                }
+            });
+
+            if (paintingToShow && infoCardRef.current) {
+                const { title, description, category, _id } = paintingToShow.userData;
+                infoCardRef.current.innerHTML = `
+                    <h1>${title}</h1>
+                    <h2>${category}</h2>
+                    <p>${description}</p>
+                    <button class="buyBtn" data-painting-id="${_id}">Buy Now</button>
+                `;
+                infoCardRef.current.style.display = 'block';
+
+                // Add onClick directly to the button
+                const buyBtn = infoCardRef.current.querySelector('.buyBtn');
+                if (buyBtn) {
+                    buyBtn.addEventListener('click', () => {
+                        console.log("✅ Buy button clicked for:", paintingToShow.userData);
+
+                        if (!paintingToShow?.userData?._id) {
+                            console.error("❌ Painting ID is undefined!");
+                            return;
+                        }
+
+                        localStorage.setItem("paintingData", JSON.stringify(paintingToShow));
+                        navigate(`/paintings/paintingpost/${paintingToShow.userData._id}?buyerId=${userID}`);
+                    });
+                }
+            } else if (infoCardRef.current) {
+                infoCardRef.current.innerHTML = '';
+            }
+        };
 
         const animate = () => {
             requestAnimationFrame(animate);
@@ -201,7 +210,7 @@ const VirtualGallery = () => {
         const fetchGalleryPaintings = async () => {
             try {
                 const res = await axios.get(`${api}/forgallery/allpaintings`);
-                galleryPaintings = res.data.fetchedPaintings;
+                setGalleryPaintings(res.data.fetchedPaintings);
                 mountAllPaintings();
             } catch (err) {
                 console.error("❌ Fetch error:", err);
@@ -210,29 +219,16 @@ const VirtualGallery = () => {
 
         fetchGalleryPaintings();
         animate();
-    }, []);
+
+    }, []); // Dependency array
 
     return (
-        <div style={{ position: 'relative' }}>
-            <canvas ref={canvasRef} />
-            <div
-                ref={infoCardRef}
-                id="info-card"
-                style={{
-                    display: 'none',
-                    position: 'absolute',
-                    bottom: '20px',
-                    left: '20px',
-                    padding: '10px',
-                    minHeight: '100px',
-                    minWidth: '300px',
-                    backgroundColor: 'rgba(0, 0, 0, 0.8)',
-                    color: 'white',
-                    borderRadius: '5px',
-                    fontFamily: 'Arial, sans-serif',
-                    zIndex: 100
-                }}
-            ></div>
+        <div style={{ height: '100vh', backgroundColor: 'black' }}>
+            <div ref={infoCardRef} style={{
+                position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)',
+                backgroundColor: 'white', padding: '20px', borderRadius: '10px', display: 'none'
+            }}></div>
+            <canvas ref={canvasRef}></canvas>
         </div>
     );
 };

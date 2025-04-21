@@ -158,45 +158,41 @@ const VirtualGallery = () => {
         };
 
         const updatePaintingInfo = () => {
-            let paintingToShow = null;
-            const threshold = 30;
-
-            scene.children.forEach((obj) => {
-                if (obj.userData && obj.userData.position) {
-                    const dist = camera.position.distanceTo(obj.userData.position);
-                    if (dist < threshold) paintingToShow = obj;
-                }
-            });
-
             if (paintingToShow && infoCardRef.current) {
-                const { title, description, category, _id } = paintingToShow.userData;
-                infoCardRef.current.innerHTML = `
-                    <h1>${title}</h1>
-                    <h2>${category}</h2>
-                    <p>${description}</p>
-                    <button class="buyBtn" data-painting-id="${_id}">Buy Now</button>
-                `;
-                infoCardRef.current.style.display = 'block';
-
-                // Add onClick directly to the button
-                const buyBtn = infoCardRef.current.querySelector('.buyBtn');
-                if (buyBtn) {
-                    buyBtn.addEventListener('click', () => {
-                        console.log("✅ Buy button clicked for:", paintingToShow.userData);
-
-                        if (!paintingToShow?.userData?._id) {
-                            console.error("❌ Painting ID is undefined!");
-                            return;
-                        }
-
-                        localStorage.setItem("paintingData", JSON.stringify(paintingToShow));
-                        navigate(`/paintings/paintingpost/${paintingToShow.userData._id}?buyerId=${userID}`);
-                    });
-                }
+              // Unlock pointer controls so user can interact with the DOM
+              controls1.unlock();
+          
+              const { title, description, category, _id } = paintingToShow.userData;
+              infoCardRef.current.innerHTML = `
+                <h1>${title}</h1>
+                <h2>${category}</h2>
+                <p>${description}</p>
+                <button class="buyBtn" data-painting-id="${_id}">Buy Now</button>
+              `;
+              infoCardRef.current.style.display = 'block';
+          
+              const buyBtn = infoCardRef.current.querySelector('.buyBtn');
+              if (buyBtn) {
+                buyBtn.addEventListener('click', () => {
+                  console.log("✅ Buy button clicked for:", paintingToShow.userData);
+          
+                  if (!paintingToShow?.userData?._id) {
+                    console.error("❌ Painting ID is undefined!");
+                    return;
+                  }
+          
+                  localStorage.setItem("paintingData", JSON.stringify(paintingToShow));
+                  navigate(`/paintings/paintingpost/${paintingToShow.userData._id}?buyerId=${userID}`);
+                });
+              }
             } else if (infoCardRef.current) {
-                infoCardRef.current.innerHTML = '';
+              // Hide card and re-lock pointer
+              infoCardRef.current.innerHTML = '';
+              infoCardRef.current.style.display = 'none';
+              controls1.lock();
             }
-        };
+          };
+          
 
         const animate = () => {
             requestAnimationFrame(animate);
